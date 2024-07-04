@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
+"""Basic annotations - concat"""
 
-def floor(n: float) -> int:
-    """takes a float n as argument and returns the floor of the float."""
-    return int(round(n))
+
+def concat(str1: str, str2: str) -> str:
+    return f"{str1}{str2}"
