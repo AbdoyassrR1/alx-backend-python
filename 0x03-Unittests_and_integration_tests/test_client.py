@@ -28,7 +28,7 @@ class TestGithubOrgClient(unittest.TestCase):
         based on the mocked payload
         """
         with patch('client.GithubOrgClient.org',
-                   new_callable=PropertyMock) as mock:
+                    new_callable=PropertyMock) as mock:
             payload = {"repos_url": "World"}
             mock.return_value = payload
             test_class = GithubOrgClient('test')
@@ -44,7 +44,7 @@ class TestGithubOrgClient(unittest.TestCase):
         mock_json.return_value = json_payload
 
         with patch('client.GithubOrgClient._public_repos_url',
-                   new_callable=PropertyMock) as mock_public:
+                    new_callable=PropertyMock) as mock_public:
 
             mock_public.return_value = "hello/world"
             test_class = GithubOrgClient('test')
@@ -76,19 +76,13 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """A class method called before tests in an individual class are run"""
-        # def my_side_effect(url):
-        #     """ Side Effect function for test """
-        #     test_url = "https://api.github.com/orgs/google"
-        #     if url == test_url:
-        #         return cls.org_payload
-        #     return cls.repos_payload
 
         config = {'return_value.json.side_effect':
-                  [
-                      cls.org_payload, cls.repos_payload,
-                      cls.org_payload, cls.repos_payload
-                  ]
-                  }
+                    [
+                        cls.org_payload, cls.repos_payload,
+                        cls.org_payload, cls.repos_payload
+                    ]
+                    }
         cls.get_patcher = patch('requests.get', **config)
 
         cls.mock = cls.get_patcher.start()
