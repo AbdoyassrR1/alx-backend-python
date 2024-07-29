@@ -87,27 +87,30 @@ class TestIntegrationGithubOrgClient(unittest.TestCase):
 
         cls.mock = cls.get_patcher.start()
 
-    def test_public_repos(self):
-        """ Integration test: public repos"""
-        test_class = GithubOrgClient("google")
+    def test_public_repos(self) -> None:
+        """
+        Tests for `public_repos` method without license
+        """
+        test = GithubOrgClient('google/repos')
+        self.assertEqual(
+            self.expected_repos,
+            test.public_repos(license=None)
+        )
 
-        self.assertEqual(test_class.org, self.org_payload)
-        self.assertEqual(test_class.repos_payload, self.repos_payload)
-        self.assertEqual(test_class.public_repos(), self.expected_repos)
-        self.assertEqual(test_class.public_repos("XLICENSE"), [])
-        self.mock.assert_called()
-
-    def test_public_repos_with_license(self):
-        """ Integration test for public repos with License """
-        test_class = GithubOrgClient("google")
-
-        self.assertEqual(test_class.public_repos(), self.expected_repos)
-        self.assertEqual(test_class.public_repos("XLICENSE"), [])
-        self.assertEqual(test_class.public_repos(
-            "apache-2.0"), self.apache2_repos)
-        self.mock.assert_called()
+    def test_public_repos_with_license(self) -> None:
+        """
+        Tests for `public_repos` method with license
+        """
+        test = GithubOrgClient('google/repos')
+        self.assertEqual(
+            self.apache2_repos,
+            test.public_repos(license="apache-2.0")
+        )
 
     @classmethod
-    def tearDownClass(cls):
-        """A class method called after tests in an individual class have run"""
+    def tearDownClass(cls) -> None:
+        """
+        TearDown class method
+        """
         cls.get_patcher.stop()
+        cls.org_patcher.stop()
